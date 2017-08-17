@@ -165,12 +165,14 @@ app.post('/fb', (req, res) => {
         userid: fid
     });
     Facebookid.findOne({userid: fid}).then((user) => {
-        if(user){
-         res.status(400).send();
+        if(!user){
+            fbuser.save().then((user) => {
+                res.redirect('/lectures');
+            });
+        } else {
+            return res.status(200).redirect('/lectures');
         }
-        fbuser.save().then((user) => {
-            res.send(user)
-        });
+        
     }).catch((e) => {
         res.status(400).send();
     });
