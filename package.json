@@ -1,7 +1,6 @@
 {
   "name": "ostazy",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node server/server.js"
@@ -27,5 +26,14 @@
     "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
     "supertest": "^3.0.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IbrahimKeshta/ostazy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/IbrahimKeshta/ostazy/issues"
+  },
+  "homepage": "https://github.com/IbrahimKeshta/ostazy#readme",
+  "description": ""
 }
