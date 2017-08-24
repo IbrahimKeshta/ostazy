@@ -300,7 +300,7 @@ app.get('/lectures/grammar', (req, res) => {
         field: "grammar"
     }).then((subjects) => {
         subjects.reverse();
-        res.send(subjects);
+        res.send({subjects});
     }).catch((e) => {
         res.status(400).send();
     });
@@ -312,7 +312,7 @@ app.get('/lectures/story', (req, res) => {
         field: "story"
     }).then((subjects) => {
         subjects.reverse();
-        res.send(subjects);
+        res.send({subjects});
     }).catch((e) => {
         res.status(400).send();
     });
@@ -324,7 +324,7 @@ app.get('/lectures/exercises', (req, res) => {
         field: "exercises"
     }).then((subjects) => {
         subjects.reverse();
-        res.send(subjects);
+        res.send({subjects});
     }).catch((e) => {
         res.status(400).send();
     });
