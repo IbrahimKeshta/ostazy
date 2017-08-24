@@ -32,6 +32,7 @@ var UserSchema = new mongoose.Schema({
     }]
 });
 
+
 UserSchema.methods.toJSON = function () { // what exactly gets sent back when mongoose model convert into a json value
     var user = this;
     var userObject = user.toObject();
@@ -43,7 +44,7 @@ UserSchema.methods.generateAuthToken = function () { //instance method called wi
     var user = this;
     var access = 'auth';
     var token = jwt.sign({ _id: user._id.toHexString(), access }, process.env.JWT_SECRET).toString();
-
+    
     user.tokens.push({ access, token });
 
     return user.save().then(() => {     // save user model
@@ -77,7 +78,19 @@ UserSchema.statics.findByToken = function (token) { // model method called with 
         'tokens.access': 'auth'
     });
 };
-
+UserSchema.statics.validPassword = function(password) {
+    var User = this;
+    return new Promise((resolve, reject) => {
+        // use bycrypt.compare to compare  password and user.password
+        bcrypt.compare(password, User.password, (err, res) => {
+            if (res) {
+                resolve(password);
+            } else {
+                reject();
+            }
+        });
+    });
+};
 UserSchema.statics.findByCredentials = function (email, password) {
     var User = this;
 
@@ -116,6 +129,7 @@ UserSchema.pre('save', function (next) {
         next();
     }
 });
+
 var User = mongoose.model('User', UserSchema);
 
 module.exports = { User };
