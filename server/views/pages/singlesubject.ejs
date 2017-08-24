@@ -14,11 +14,10 @@
 
     <main>
         <div class="jumbotron">
-
-
-            <h1>
-                <%= subject.title%>
-            </h1>
+            <!-- show any messages that come back with authentication -->
+            <% if (message.length > 0) { %>
+                <div class="alert alert-info"><%= message %></div>
+            <% } %>
             <ul class="list-group">
                 <li class="list-group-item active"><strong>Title: </strong>
                     <%= subject.title %>

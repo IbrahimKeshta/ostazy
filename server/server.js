@@ -63,12 +63,17 @@ app.get('/about', isLoggedIn,(req, res) => {
 });
 
 app.get('/subjects', isLoggedIn, (req, res) => {
-    res.render('pages/addsubject');
+    res.render('pages/addsubject',  {message: req.flash('addMessage')});
 });
 // Post
 app.post('/subjects', isLoggedIn, (req, res) => {
     if(!req.body.title || !req.body.field || !req.body.ytLink || !req.body.document){
-        return res.render('pages/addsubject');
+        req.flash('addMessage','please complete all fields')
+       return  res.redirect('/subjects');
+    }
+    if(yturl(req.body.ytLink) === null) {
+        req.flash('addMessage','youtube link should be a URL')
+        return res.redirect('/subjects');        
     }
     var subject = new Subjects({
         title: req.body.title,
@@ -79,6 +84,7 @@ app.post('/subjects', isLoggedIn, (req, res) => {
     });
     console.log(yturl(req.body.ytLink).embedUrl);
     subject.save().then((doc) => {
+        req.flash('singleMessage', 'subject created');
         res.redirect(`/subjects/${doc._id}`);
     }, (e) => {
         res.status(400).send(e);
@@ -91,7 +97,7 @@ app.get('/allsubjects', isLoggedIn, (req, res) => {
         _creator: req.user._id
     }).then((subjects) => {
         subjects.reverse();
-        res.render('pages/allsubjects', { subjects: subjects });
+        res.render('pages/allsubjects', { subjects: subjects , message: req.flash('deleteMessage')});
     }, (e) => {
         res.status(400).send(e);
     });
@@ -111,7 +117,7 @@ app.get('/subjects/:id', isLoggedIn, (req, res) => {
         if (!subject) {
             return res.status(404).send();
         }
-        res.status(200).render('pages/singlesubject',{ subject: subject });
+        res.status(200).render('pages/singlesubject',{ subject: subject , message: req.flash('singleMessage')});
     }).catch((e) => {
         return res.status(400).send();
     });
@@ -137,6 +143,7 @@ app.delete('/delsubjects/:id', isLoggedIn, (req, res) => {
         if (!subject) {
             return res.status(404).send();
         }
+        req.flash('deleteMessage', 'subject deleted');
         res.redirect('/allsubjects'); //return object 
         //error
         //404 with empty body
@@ -159,7 +166,7 @@ app.get('/editsubjects/:id', isLoggedIn, (req, res) => {
         if (!subject) {
             return res.status(404).send();
         }
-        res.render('pages/editsubject',{ subject: subject });
+        res.render('pages/editsubject',{ subject: subject , message: req.flash('editMessage') });
 
     }).catch((e) => {
         res.status(400).send();
@@ -170,9 +177,16 @@ app.get('/editsubjects/:id', isLoggedIn, (req, res) => {
 app.post('/editsubjects/:id', isLoggedIn, (req, res) => {
     var id = req.params.id;
     if(!req.body.title || !req.body.field || !req.body.ytLink || !req.body.document){
-        return res.render('pages/editsubject', {subject: req.body});
+        req.flash('editMessage','please complete all fields');
+        return res.redirect(`/editsubjects/${id}`);
+        // return res.render('pages/editsubject', {subject: req.body});
     }
     var body = _.pick(req.body, ['title', 'field', 'ytLink', 'document']); //_.pick(Object, [proprties]) 
+    if(yturl(req.body.ytLink) === null) {
+        req.flash('editMessage','youtube link should be a URL');
+        req.flash('singleMessage', 'Subject edited');
+        return res.redirect(`/editsubjects/${id}`);        
+    }
     body.ytLink = (yturl(body.ytLink)).embedUrl;
 
     if (!ObjectID.isValid(id)) {
@@ -183,6 +197,7 @@ app.post('/editsubjects/:id', isLoggedIn, (req, res) => {
         if (!subject) {
             return res.status(404).send();
         }
+        req.flash('singleMessage','Subject edited');
         res.redirect(`/subjects/${id}`);
 
     }).catch((e) => {

@@ -14,7 +14,12 @@
 
     <main>
         <div class="jumbotron">
-
+            <!-- show any messages that come back with authentication -->
+            <% if (message.length > 0) { %>
+                <div class="alert alert-danger"><%= message %></div>
+            <% } %>
+            <a href="/subjects" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-plus"></span> New Subject</a>
+            <br><br>
             <% for(var i=0; i < subjects.length; i++) { %>
                 <ul class="list-group">
                     <li class="list-group-item active"><strong>Title: </strong>
@@ -36,8 +41,6 @@
                     </li>
                 </ul>
                 <% } %>
-                <a href="/subjects" class="btn btn-primary btn-sm">Add New Subject</a>
-
         </div>
     </main>
 
