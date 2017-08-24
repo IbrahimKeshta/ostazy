@@ -1,0 +1,52 @@
+<!-- views/pages/singlesubjects -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body class="container">
+
+    <header>
+        <% include ../partials/header %>
+    </header>
+
+    <main>
+        <div class="jumbotron">
+
+
+            <h1>
+                <%= subject.title%>
+            </h1>
+            <ul class="list-group">
+                <li class="list-group-item active"><strong>Title: </strong>
+                    <%= subject.title %>
+                </li>
+                <li class="list-group-item"><strong>Field: </strong>
+                    <%= subject.field %>
+                </li>
+                <li class="list-group-item"><strong>Youtube Video</strong>
+                    <iframe width="560" height="315" src="<%= subject.ytLink %>" frameborder="0" allowfullscreen></iframe>
+                </li>
+                <li class="list-group-item"><strong>Document</strong>
+                    <%= subject.document %>
+                </li>
+                <li class="list-group-item">
+                    <a href="/delsubjects/<%= subject._id %>?_method=DELETE" class="btn btn-danger" role="button">delete subject?</a>
+                    <a href="/editsubjects/<%= subject._id %>" class="btn btn-success" role="button">Edit subject?</a>
+                    <a href="/allsubjects" class="btn btn-info" role="button">return to subjects</a>
+                </li>
+            </ul>
+
+
+        </div>
+    </main>
+
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
+
+</body>
+
+</html>

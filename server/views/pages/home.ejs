@@ -1,0 +1,26 @@
+<!-- views/pages/home -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <% include ../partials/head %>
+</head>
+<body class="container">
+
+    <header>
+        <% include ../partials/header %>
+    </header>
+
+    <main>
+        <div class="jumbotron">
+            <h1>Welcome <%= user.email %></h1>
+            <a href="/allsubjects" class="btn btn-primary btn-sm">All Subjects</a>
+            <a href="/subjects" class="btn btn-default btn-sm">Add New Subject</a>
+        </div>
+    </main>
+
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
+
+</body>
+</html>

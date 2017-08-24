@@ -1,0 +1,50 @@
+<!-- views/pages/allsubjects -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body class="container">
+
+    <header>
+        <% include ../partials/header %>
+    </header>
+
+    <main>
+        <div class="jumbotron">
+
+            <% for(var i=0; i < subjects.length; i++) { %>
+                <ul class="list-group">
+                    <li class="list-group-item active"><strong>Title: </strong>
+                        <%= subjects[i].title %>
+                    </li>
+                    <li class="list-group-item"><strong>Field: </strong>
+                        <%= subjects[i].field %>
+                    </li>
+                    <li class="list-group-item"><strong>Youtube Video</strong>
+                        <iframe width="560" height="315" src="<%= subjects[i].ytLink %>" frameborder="0" allowfullscreen></iframe>
+                    </li>
+                    <li class="list-group-item"><strong>Document</strong>
+                        <%= subjects[i].document %>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="/subjects/<%= subjects[i]._id %>" class="btn btn-info" role="button">View Subject</a>
+                        <a href="/delsubjects/<%= subjects[i]._id %>?_method=DELETE" class="btn btn-danger" role="button">delete subject?</a>
+                        <a href="/editsubjects/<%= subjects[i]._id %>" class="btn btn-success" role="button">Edit subject?</a>
+                    </li>
+                </ul>
+                <% } %>
+                <a href="/subjects" class="btn btn-primary btn-sm">Add New Subject</a>
+
+        </div>
+    </main>
+
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
+
+</body>
+
+</html>

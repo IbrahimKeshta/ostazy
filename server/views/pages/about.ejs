@@ -1,0 +1,50 @@
+<!-- views/pages/about.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head %>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body class="container">
+
+    <header>
+        <% include ../partials/header %>
+    </header>
+
+    <main>
+        <div class="row">
+            <div class="col-sm-8">
+
+                <div class="jumbotron">
+                    <h1>This is great</h1>
+                    <p>Welcome to Ostazy Dashboard</p>
+                    <p>this Dashboard for manage Ostazy App creating subjects- edit - delete for students <br> This Dashboard
+                        created by Ibrahim Keshta and you can contact me by social media links in sidebar!</p>
+                </div>
+
+            </div>
+            <div class="col-sm-4">
+
+                <div class="well">  
+                    <!--Facebook-->
+                   <a  href="https://www.facebook.com/ibrahim.keshta" ><button type="button"  class="btn btn-fb"><i class="fa fa-facebook left"></i> Facebook</button></a><br>
+                    <!--Twitter--><br>
+                    <button type="button" class="btn btn-tw"><i class="fa fa-whatsapp left"></i>01126222833</button>
+                    <!--Github--><br><br>
+                   <a href="https://github.com/IbrahimKeshta"><button type="button" class="btn btn-git"><i class="fa fa-github left"></i> Github</button></a>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
+
+</body>
+
+</html>
