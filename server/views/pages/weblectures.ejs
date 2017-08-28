@@ -22,6 +22,9 @@
                     <li><a href="/about">About</a></li>
                     <li><a href="/users/me">Profile</a></li>
                     <li><a href="/weblectures">All Subjects</a></li>
+                    <li><a href="/weblectures/1">1st Secondary</a></li>
+                    <li><a href="/weblectures/2">2nd Secondary</a></li>
+                    <li><a href="/weblectures/3">3rd Secondary</a></li>                   
                 </ul>
 
             </div>
@@ -38,6 +41,11 @@
                 <ul class="list-group">
                     <li class="list-group-item active"><strong>Title: </strong>
                         <%= subjects[i].title %>
+                    </li>
+                    <li class="list-group-item"><strong>Grade: </strong>
+                        <% if(subjects[i].grade == '1'){ %> 1st secondary <% }%>
+                        <% if(subjects[i].grade == '2'){ %> 2nd secondary <% }%>
+                        <% if(subjects[i].grade == '3'){ %> 3rd secondary <% }%>
                     </li>
                     <li class="list-group-item"><strong>Field: </strong>
                         <%= subjects[i].field %>

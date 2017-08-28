@@ -25,6 +25,12 @@
                     <li class="list-group-item active"><strong>Title: </strong>
                         <%= subjects[i].title %>
                     </li>
+                    <li class="list-group-item"><strong>Grade: </strong>
+                        <% if(subjects[i].grade == '1'){ %> 1st secondary <% }%>
+                        <% if(subjects[i].grade == '2'){ %> 2nd secondary <% }%>
+                        <% if(subjects[i].grade == '3'){ %> 3rd secondary <% }%>                        
+                        <!-- <%= subjects[i].grade %> -->
+                    </li>
                     <li class="list-group-item"><strong>Field: </strong>
                         <%= subjects[i].field %>
                     </li>

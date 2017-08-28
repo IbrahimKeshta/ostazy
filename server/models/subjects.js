@@ -6,6 +6,12 @@ var Subjects = mongoose.model('Subjects', {
         minlength: 1, // it should at least one letter
         trim: true // trim spaces in beggining of the word
     },
+    grade : {
+        type: String,
+        required: true,
+        minlength: 1,
+        trim: true,
+    },
     field: {
         type: String,
         required: true,

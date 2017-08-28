@@ -67,7 +67,7 @@ app.get('/subjects', isLoggedIn, (req, res) => {
 });
 // Post
 app.post('/subjects', isLoggedIn, (req, res) => {
-    if(!req.body.title || !req.body.field || !req.body.ytLink || !req.body.document){
+    if(!req.body.title || !req.body.grade || !req.body.field || !req.body.ytLink || !req.body.document){
         req.flash('addMessage','please complete all fields')
        return  res.redirect('/subjects');
     }
@@ -77,12 +77,13 @@ app.post('/subjects', isLoggedIn, (req, res) => {
     }
     var subject = new Subjects({
         title: req.body.title,
+        grade: req.body.grade,
         field: req.body.field,
         ytLink: yturl(req.body.ytLink).embedUrl,
         document: req.body.document,
         _creator: req.user._id
     });
-    console.log(yturl(req.body.ytLink).embedUrl);
+    // console.log(yturl(req.body.ytLink).embedUrl);
     subject.save().then((doc) => {
         req.flash('singleMessage', 'subject created');
         res.redirect(`/subjects/${doc._id}`);
@@ -94,6 +95,19 @@ app.post('/subjects', isLoggedIn, (req, res) => {
 // GET all subjects
 app.get('/allsubjects', isLoggedIn, (req, res) => {
     Subjects.find({
+        _creator: req.user._id
+    }).then((subjects) => {
+        subjects.reverse();
+        res.render('pages/allsubjects', { subjects: subjects , message: req.flash('deleteMessage')});
+    }, (e) => {
+        res.status(400).send(e);
+    });
+});
+// GET all subjects by grade
+app.get('/allsubjects/:grade', isLoggedIn, (req, res) => {
+    var grade = req.params.grade;
+    Subjects.find({
+        grade,
         _creator: req.user._id
     }).then((subjects) => {
         subjects.reverse();
@@ -154,7 +168,7 @@ app.delete('/delsubjects/:id', isLoggedIn, (req, res) => {
 
 app.get('/editsubjects/:id', isLoggedIn, (req, res) => {
     var id = req.params.id;
-    var body = _.pick(req.body, ['title', 'field', 'ytLink', 'document']); //_.pick(Object, [proprties]) 
+    var body = _.pick(req.body, ['title', 'field', 'grade', 'ytLink', 'document']); //_.pick(Object, [proprties]) 
     
     if (!ObjectID.isValid(id)) {
         return res.status(404).send('Not Valid ID');
@@ -176,12 +190,12 @@ app.get('/editsubjects/:id', isLoggedIn, (req, res) => {
 // UPDATE route
 app.post('/editsubjects/:id', isLoggedIn, (req, res) => {
     var id = req.params.id;
-    if(!req.body.title || !req.body.field || !req.body.ytLink || !req.body.document){
+    if(!req.body.title || !req.body.field || !req.body.grade || !req.body.ytLink || !req.body.document){
         req.flash('editMessage','please complete all fields');
         return res.redirect(`/editsubjects/${id}`);
         // return res.render('pages/editsubject', {subject: req.body});
     }
-    var body = _.pick(req.body, ['title', 'field', 'ytLink', 'document']); //_.pick(Object, [proprties]) 
+    var body = _.pick(req.body, ['title', 'field', 'grade', 'ytLink', 'document']); //_.pick(Object, [proprties]) 
     if(yturl(req.body.ytLink) === null) {
         req.flash('editMessage','youtube link should be a URL');
         // req.flash('singleMessage', 'Subject edited');
@@ -357,6 +371,18 @@ app.get('/weblectures', (req, res) => {
     })
 });
 
+//public web GET lectures by grade
+app.get('/weblectures/:grade', (req, res) => {
+    var grade = req.params.grade;
+    Subjects.find({
+        grade
+    }).then((subjects) => {
+        subjects.reverse();
+        res.render('pages/weblectures', {subjects: subjects, user: req.user});
+    }).catch((e) => {
+        res.status(400).send();
+    });
+});
 // public GET subjects for all
 app.get('/lectures', (req, res) => {
     Subjects.find().then((subjects) => {
@@ -370,8 +396,10 @@ app.get('/lectures', (req, res) => {
     })
 });
 // GET subjects of grammar lectures 
-app.get('/lectures/grammar', (req, res) => {
+app.get('/lectures/grammar/:grade', (req, res) => {
+    var grade = req.params.grade;
     Subjects.find({
+        grade,
         field: "grammar"
     }).then((subjects) => {
         subjects.reverse();
@@ -382,8 +410,10 @@ app.get('/lectures/grammar', (req, res) => {
 });
 
 // GET subjects of story lectures 
-app.get('/lectures/story', (req, res) => {
+app.get('/lectures/story/:grade', (req, res) => {
+    var grade = req.params.grade;
     Subjects.find({
+        grade,
         field: "story"
     }).then((subjects) => {
         subjects.reverse();
@@ -394,8 +424,10 @@ app.get('/lectures/story', (req, res) => {
 });
 
 // GET subjects of exercises lectures 
-app.get('/lectures/exercises', (req, res) => {
+app.get('/lectures/exercises/:grade', (req, res) => {
+    var grade = req.params.grade;
     Subjects.find({
+        grade,
         field: "exercises"
     }).then((subjects) => {
         subjects.reverse();
