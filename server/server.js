@@ -320,7 +320,6 @@ app.post('/edituser/:id', isLoggedIn, (req, res) => {
     });
 });
 
-
 app.get('/logout', function(req, res) {
     req.logout();
     res.redirect('/index');
@@ -352,7 +351,7 @@ app.get('/weblectures', (req, res) => {
             res.status(400).send();
         }
         subjects.reverse();
-        res.render('pages/weblectures', {subjects: subjects});
+        res.render('pages/weblectures', {subjects: subjects, user: req.user});
     }).catch((e) => {
         res.status(400).send();
     })
