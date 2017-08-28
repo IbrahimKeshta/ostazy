@@ -20,9 +20,14 @@ var authenticate = (req, res, next) => {
 function isLoggedIn(req, res, next) {
     
         // if user is authenticated in the session, carry on 
-        if (req.isAuthenticated())
+        if (req.isAuthenticated()){
+            if(req.user.role === 'admin'){
             return next();
-    
+        }
+        res.redirect('/weblectures');
+    }
+           
+        
         // if they aren't redirect them to the home page
         res.redirect('/index');
 };

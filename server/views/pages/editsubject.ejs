@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>Add Subject</title>
+    <title>Edit Subject</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
@@ -49,13 +49,13 @@
                     
                     <textarea class="form-control" rows="5" id="document" name="document"><%= subject.document %></textarea>
                 </div>
-                <button type="submit" class="btn btn-warning btn-lg">Add</button>
+                <button type="submit" class="btn btn-warning btn-lg">Edit</button>
             </form>
             <a href="/subjects/<%= subject._id %>" class="btn btn-info" role="button">View Subject</a>
             <hr>
 
             <p>All subjects <a href="/allsubjects">All subjects</a></p>
-            <p>Or go <a href="/index">home</a>.</p>
+            <p>Or go <a href="/">home</a>.</p>
 
         </div>
 

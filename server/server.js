@@ -55,10 +55,10 @@ app.get('/index', (req, res) => {
     res.render('pages/index');
 })
 app.get('/', isLoggedIn, (req, res) => {
-  res.render('pages/home',{ user: req.user});
+    res.render('pages/home',{ user: req.user});  
 });
 
-app.get('/about', isLoggedIn,(req, res) => {
+app.get('/about',(req, res) => {
     res.render('pages/about', {message: req.flash('subMessage')});
 });
 
@@ -184,7 +184,7 @@ app.post('/editsubjects/:id', isLoggedIn, (req, res) => {
     var body = _.pick(req.body, ['title', 'field', 'ytLink', 'document']); //_.pick(Object, [proprties]) 
     if(yturl(req.body.ytLink) === null) {
         req.flash('editMessage','youtube link should be a URL');
-        req.flash('singleMessage', 'Subject edited');
+        // req.flash('singleMessage', 'Subject edited');
         return res.redirect(`/editsubjects/${id}`);        
     }
     body.ytLink = (yturl(body.ytLink)).embedUrl;
@@ -230,7 +230,7 @@ app.post('/users', passport.authenticate('local-signup', {
     failureFlash: true
 }));
 
-app.get('/users/me', (req, res) => {
+app.get('/users/me', isLoggedIn,(req, res) => {
     // res.send(req.user);
     res.render('pages/profile.ejs', {
         user : req.user // get the user out of session and pass to template
@@ -272,6 +272,60 @@ app.post('/users/login', passport.authenticate('local-login', {
 //         res.status(400).send();
 //     });
 // });
+// GET all users route
+app.get('/allusers', isLoggedIn, (req, res) => {
+    User.find({}).then((user) => {
+        user.reverse();
+        res.render('pages/users', { user: user , message: req.flash('userMessage')});
+    }, (e) => {
+        res.status(400).send(e);
+    });
+});
+// GET user edit route
+app.get('/edituser/:id', isLoggedIn, (req, res) => {
+    var id = req.params.id;
+    var body = _.pick(req.user, ['email', 'role']); //_.pick(Object, [proprties]) 
+    
+    if (!ObjectID.isValid(id)) {
+        return res.status(404).send('Not Valid ID');
+    }
+    User.findOne({
+        _id: id
+    }).then((user) => {
+        if (!user) {
+            return res.status(404).send();
+        }
+        res.render('pages/edituser',{ user: user });
+
+    }).catch((e) => {
+        res.status(400).send();
+    });
+});
+//POST user edit route
+app.post('/edituser/:id', isLoggedIn, (req, res) => {
+    var id = req.params.id;
+    var body = _.pick(req.body, ['email', 'role']);
+    console.log('body' + body);
+    if(!ObjectID.isValid(id)) {
+        return res.status(404).send('Not Valid ID');
+    }
+    User.findOneAndUpdate({_id: id}, { $set: body }, { new: true }).then((user) => {
+        if(!user){
+            return res.status(404).send();
+        }
+        req.flash('userMessage', 'User Edited');
+        res.redirect('/allusers');
+    }).catch((e) => {
+        res.status(400).send(e);
+    });
+});
+app.get('/profile', (req, res) => {
+    // res.send(req.user);
+    res.render('pages/profile.ejs', {
+        user : req.user // get the user out of session and pass to template
+    })
+});
+
 
 app.get('/logout', function(req, res) {
     req.logout();
@@ -295,6 +349,19 @@ app.post('/fb', (req, res) => {
     }).catch((e) => {
         res.status(400).send();
     });
+});
+
+//public web Get subjects
+app.get('/weblectures', (req, res) => {
+    Subjects.find().then((subjects) => {
+        if(!subjects){
+            res.status(400).send();
+        }
+        subjects.reverse();
+        res.render('pages/weblectures', {subjects: subjects});
+    }).catch((e) => {
+        res.status(400).send();
+    })
 });
 
 // public GET subjects for all
