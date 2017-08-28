@@ -230,7 +230,7 @@ app.post('/users', passport.authenticate('local-signup', {
     failureFlash: true
 }));
 
-app.get('/users/me', isLoggedIn,(req, res) => {
+app.get('/users/me', (req, res) => {
     // res.send(req.user);
     res.render('pages/profile.ejs', {
         user : req.user // get the user out of session and pass to template
@@ -318,12 +318,6 @@ app.post('/edituser/:id', isLoggedIn, (req, res) => {
     }).catch((e) => {
         res.status(400).send(e);
     });
-});
-app.get('/profile', (req, res) => {
-    // res.send(req.user);
-    res.render('pages/profile.ejs', {
-        user : req.user // get the user out of session and pass to template
-    })
 });
 
 
