@@ -1,0 +1,60 @@
+<!-- views/pages/allsubjects -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body class="container">
+
+    <header>
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+        
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/weblectures">
+                        <span class="glyphicon glyphicon glyphicon-tree-deciduous"></span>
+                        Ostazy
+                    </a>
+                </div>
+        
+                <ul class="nav navbar-nav">
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/profile">Profile</a></li>
+                    <li><a href="/weblectures">All Subjects</a></li>                     
+                </ul>
+        
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="jumbotron">
+            <br><br>
+            <% for(var i=0; i < subjects.length; i++) { %>
+                <ul class="list-group">
+                    <li class="list-group-item active"><strong>Title: </strong>
+                        <%= subjects[i].title %>
+                    </li>
+                    <li class="list-group-item"><strong>Field: </strong>
+                        <%= subjects[i].field %>
+                    </li>
+                    <li class="list-group-item"><strong>Youtube Video</strong>
+                        <iframe width="560" height="315" src="<%= subjects[i].ytLink %>" frameborder="0" allowfullscreen></iframe>
+                    </li>
+                    <li class="list-group-item"><strong>Document</strong>
+                        <%= subjects[i].document %>
+                    </li>
+                </ul>
+                <% } %>
+        </div>
+    </main>
+
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
+
+</body>
+
+</html>

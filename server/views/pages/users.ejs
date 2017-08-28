@@ -1,0 +1,44 @@
+<!-- views/pages/allsubjects -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body class="container">
+
+    <header>
+        <% include ../partials/header %>
+    </header>
+
+    <main>
+        <div class="jumbotron">
+            <!-- show any messages that come back with authentication -->
+            <% if (message.length > 0) { %>
+                <div class="alert alert-danger"><%= message %></div>
+            <% } %>
+            <br><br>
+            <% for(var i=0; i < user.length; i++) { %>
+                <ul class="list-group">
+                    <li class="list-group-item active"><strong>Email: </strong>
+                        <%= user[i].email %>
+                    </li>
+                    <li class="list-group-item"><strong>Role: </strong>
+                        <%= user[i].role %>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="/edituser/<%= user[i]._id %>" class="btn btn-success" role="button">Edit User</a>
+                    </li>
+                </ul>
+                <% } %>
+        </div>
+    </main>
+
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
+
+</body>
+
+</html>
